@@ -1,4 +1,0 @@
-package com.github.brotherlogic.cardserver.interface;
-
-public class Interface extends JFrame {
-}
