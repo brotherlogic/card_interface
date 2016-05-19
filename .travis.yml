@@ -1,1 +1,9 @@
 language: java
+
+branches:
+  only:
+  - master
+
+script:
+- if [ $TRAVIS_PULL_REQUEST = 'false' ]; then mvn release:prepare -B; mvn release:perform -B Darguments="-Dmaven.deploy.skip=true";
+  else mvn clean verify; fi
