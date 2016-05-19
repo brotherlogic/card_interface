@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.brotherlogic.cardserver</groupId>
   <artifactId>card_ui</artifactId>
   <packaging>jar</packaging>
-  <version>0.1</version>
+  <version>0.2-SNAPSHOT</version>
 
   <name>${project.groupId}:${project.artifactId}</name>
   <description>Interface for consuming cards</description>
@@ -31,7 +30,13 @@
       <email>brotherlogic@gmail.com</email>
     </developer>
   </developers>
-
+  
+  <scm>
+    <connection>scm:git:git@github.com:brotherogic/card_inteface.git</connection>
+    <developerConnection>scm:git:git@github.com:brotherlogic/card_interface.git</developerConnection>
+    <url>git@github.com:brotherlogic/card_interface.git</url>
+    <tag>HEAD</tag>
+  </scm>
 
   <prerequisites>
     <maven>2.2.1</maven>
