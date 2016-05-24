@@ -31,7 +31,7 @@ public class CardInterface extends JFrame {
     	mine.setLocationRelativeTo(null);
     	mine.setVisible(true);
     	
-    	Card c = Card.newBuilder().setText("Testing").build();
-    	mine.showCard(c);
+    	CardReader reader = new RPCCardReader("localhost", 50051);
+    	mine.showCard(reader.readCards().get(0));
     }
 }
