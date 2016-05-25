@@ -1,5 +1,8 @@
 package com.github.brotherlogic.cardserver;
 
+
+import java.util.List;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,6 +35,12 @@ public class CardInterface extends JFrame {
     	mine.setVisible(true);
     	
     	CardReader reader = new RPCCardReader("10.0.1.17", 50051);
-    	mine.showCard(reader.readCards().get(0));
+    	
+    	List<Card> cards = reader.readCards();
+    	
+    	if (cards.size() > 0)
+    		mine.showCard(reader.readCards().get(0));
+    	else
+    		mine.showCard(Card.newBuilder().setText("No Cards To Show").build());
     }
 }
