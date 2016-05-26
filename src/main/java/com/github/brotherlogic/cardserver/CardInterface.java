@@ -28,7 +28,7 @@ public class CardInterface extends JFrame {
 	}
 		
     public static void main(String[] args) {
-    	CardInterface mine = new CardInterface();
+    	final CardInterface mine = new CardInterface();
     	mine.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	mine.setSize(500,500);
     	mine.setLocationRelativeTo(null);
@@ -36,11 +36,13 @@ public class CardInterface extends JFrame {
     	
     	CardReader reader = new RPCCardReader("10.0.1.17", 50051);
     	
-    	List<Card> cards = reader.readCards();
-    	
-    	if (cards.size() > 0)
-    		mine.showCard(reader.readCards().get(0));
-    	else
-    		mine.showCard(Card.newBuilder().setText("No Cards To Show").build());
+    	reader.readCardsBackground(new CardsReturned(){
+    		public void processCards(List<Card> cards){
+    	    	if (cards.size() > 0)
+    	    		mine.showCard(cards.get(0));
+    	    	else
+    	    		mine.showCard(Card.newBuilder().setText("No Cards To Show").build());
+    	    }
+    	});	
     }
 }
