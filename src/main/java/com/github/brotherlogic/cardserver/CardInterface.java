@@ -12,6 +12,7 @@ import card.CardOuterClass.Card;
 public class CardInterface extends JFrame {
 	
 	JPanel mainPanel;
+	static boolean first = true;
 	
 	public CardInterface()
 	{
@@ -22,9 +23,11 @@ public class CardInterface extends JFrame {
 	public void showCard(Card card){
 		JLabel label = new JLabel(card.getText());
 		mainPanel.removeAll();
+		mainPanel.invalidate();
 		mainPanel.add(label);
 		
-		this.revalidate();
+		mainPanel.revalidate();
+		mainPanel.repaint();
 	}
 		
     public static void main(String[] args) {
@@ -38,10 +41,11 @@ public class CardInterface extends JFrame {
     	
     	reader.readCardsBackground(new CardsReturned(){
     		public void processCards(List<Card> cards){
-    	    	if (cards.size() > 0)
+    	    	if (!first && cards.size() > 0)
     	    		mine.showCard(cards.get(0));
     	    	else
     	    		mine.showCard(Card.newBuilder().setText("No Cards To Show").build());
+    	    	first = false;
     	    }
     	});	
     }
