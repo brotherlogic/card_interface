@@ -1,18 +1,22 @@
 package com.github.brotherlogic.cardserver;
 
 
+import java.awt.Desktop;
+import java.net.URI;
 import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import card.CardOuterClass.Card;
+import card.CardOuterClass.Card.Action;
 
 public class CardInterface extends JFrame {
 	
 	JPanel mainPanel;
-	static boolean first = true;
+	static boolean refresh = true;
 	
 	public CardInterface()
 	{
@@ -21,6 +25,29 @@ public class CardInterface extends JFrame {
 	}
 	
 	public void showCard(Card card){
+		
+		if (card.getAction() == Action.VISITURL)
+		{
+			//Bring up a browser
+			if (Desktop.isDesktopSupported()){
+				try{
+					Desktop.getDesktop().browse(new URI(card.getText()));
+					refresh = false;
+				} catch (Exception e){
+					JLabel label = new JLabel(e.getMessage());
+					mainPanel.removeAll();
+					mainPanel.invalidate();
+					mainPanel.add(label);
+					
+					mainPanel.revalidate();
+					mainPanel.repaint();
+					e.printStackTrace();
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "Unable to bring up browser");
+			}
+		}
+		else {
 		JLabel label = new JLabel(card.getText());
 		mainPanel.removeAll();
 		mainPanel.invalidate();
@@ -28,6 +55,7 @@ public class CardInterface extends JFrame {
 		
 		mainPanel.revalidate();
 		mainPanel.repaint();
+		}
 	}
 		
     public static void main(String[] args) {
@@ -41,11 +69,11 @@ public class CardInterface extends JFrame {
     	
     	reader.readCardsBackground(new CardsReturned(){
     		public void processCards(List<Card> cards){
-    	    	if (!first && cards.size() > 0)
+    			System.out.println(cards);
+    	    	if (cards.size() > 0)
     	    		mine.showCard(cards.get(0));
     	    	else
     	    		mine.showCard(Card.newBuilder().setText("No Cards To Show").build());
-    	    	first = false;
     	    }
     	});	
     }
