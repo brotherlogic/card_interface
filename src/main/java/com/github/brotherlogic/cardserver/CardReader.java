@@ -13,8 +13,8 @@ public abstract class CardReader {
 	
 	public void readCardsBackground(CardsReturned callback){
 		while(true){			
-			callback.processCards(readCards());
-			
+			if (CardInterface.refresh)
+				callback.processCards(readCards());
 			try{
 				Thread.sleep(WAIT_TIME);
 			} catch (InterruptedException e){
