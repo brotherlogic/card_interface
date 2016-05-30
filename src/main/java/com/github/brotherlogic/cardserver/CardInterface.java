@@ -1,8 +1,5 @@
 package com.github.brotherlogic.cardserver;
 
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-
 import java.awt.Desktop;
 import java.net.URI;
 import java.util.List;
@@ -23,6 +20,8 @@ import org.apache.commons.cli.Options;
 import card.CardOuterClass.Card;
 import card.CardOuterClass.DeleteRequest;
 import card.CardServiceGrpc;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 
 public class CardInterface extends JFrame {
 
@@ -40,14 +39,12 @@ public class CardInterface extends JFrame {
 	}
 
 	public void deleteCard(String hash) {
-		ManagedChannel channel = ManagedChannelBuilder
-				.forAddress("localhost", 50051).usePlaintext(true).build();
-		CardServiceGrpc.CardServiceBlockingStub blockingStub = CardServiceGrpc
-				.newBlockingStub(channel);
+		ManagedChannel channel = ManagedChannelBuilder.forAddress(CardInterface.host, CardInterface.port)
+				.usePlaintext(true).build();
+		CardServiceGrpc.CardServiceBlockingStub blockingStub = CardServiceGrpc.newBlockingStub(channel);
 
 		try {
-			DeleteRequest req = DeleteRequest.newBuilder().setHash(hash)
-					.build();
+			DeleteRequest req = DeleteRequest.newBuilder().setHash(hash).build();
 			blockingStub.deleteCards(req);
 			channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
 		} catch (Exception e) {
@@ -72,8 +69,7 @@ public class CardInterface extends JFrame {
 					PortListener listener = new PortListener(8090);
 					String response = listener.listen();
 
-					Card strCard = Card.newBuilder().setText(response)
-							.setHash("instagramauthresp").build();
+					Card strCard = Card.newBuilder().setText(response).setHash("instagramauthresp").build();
 					new CardWriter().writeCard(strCard);
 
 					refresh = true;
@@ -88,8 +84,7 @@ public class CardInterface extends JFrame {
 					e.printStackTrace();
 				}
 			} else {
-				JOptionPane.showMessageDialog(null,
-						"Unable to bring up browser");
+				JOptionPane.showMessageDialog(null, "Unable to bring up browser");
 			}
 		} else {
 			JLabel label = new JLabel(card.getText());
@@ -103,32 +98,41 @@ public class CardInterface extends JFrame {
 	}
 
 	public static void main(String[] args) throws Exception {
-		Option optionHost = OptionBuilder.withLongOpt("host").hasArg()
-				.withDescription("Hostname of server").create("h");
-		Option optionPort = OptionBuilder.withLongOpt("port").hasArg()
-				.withDescription("Port number of server").create("p");
+		Option optionHost = OptionBuilder.withLongOpt("host").hasArg().withDescription("Hostname of server")
+				.create("h");
+		Option optionPort = OptionBuilder.withLongOpt("port").hasArg().withDescription("Port number of server")
+				.create("p");
 		Options options = new Options();
 		options.addOption(optionHost);
 		options.addOption(optionPort);
 		CommandLineParser parser = new GnuParser();
 		CommandLine line = parser.parse(options, args);
 
-		final CardInterface mine = new CardInterface(line.getOptionValue("h"),
-				Integer.parseInt(line.getOptionValue("p")));
+		String host = "10.0.1.17";
+		if (line.hasOption("host"))
+			host = line.getOptionValue("h");
+		int port = 50051;
+		if (line.hasOption("port"))
+			port = Integer.parseInt(line.getOptionValue("p"));
+
+		final CardInterface mine = new CardInterface(host, port);
 		mine.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mine.setSize(500, 500);
 		mine.setLocationRelativeTo(null);
 		mine.setVisible(true);
 
-		CardReader reader = new RPCCardReader("localhost", 50051);
+		CardReader reader = new RPCCardReader(host, port);
 
 		reader.readCardsBackground(new CardsReturned() {
 			@Override
 			public void processCards(List<Card> cards) {
+				System.out.println("Seen " + cards);
+
 				if (cards.size() > 0)
 					mine.showCard(cards.get(0));
 				else
-					mine.showCard(Card.newBuilder().setText("No Cards To Show")
+					mine.showCard(Card.newBuilder()
+							.setText("No Cards To Show (" + CardInterface.host + ":" + CardInterface.port + ")")
 							.build());
 			}
 		});

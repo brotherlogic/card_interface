@@ -14,6 +14,8 @@ public class PortListener {
 	}
 
 	public String listen() throws Exception {
+		System.out.println("Listening");
+		
 		String retString = "";
 
 		ServerSocket sock = new ServerSocket(portNumber);
