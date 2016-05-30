@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -139,6 +140,14 @@ public class CardInterface extends JFrame {
 		mine.setSize(500, 500);
 		mine.setLocationRelativeTo(null);
 		mine.setVisible(true);
+
+		// Expand to the full screen
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				mine.setExtendedState(JFrame.MAXIMIZED_BOTH);
+			}
+		});
 
 		CardReader reader = new RPCCardReader(host, port);
 
