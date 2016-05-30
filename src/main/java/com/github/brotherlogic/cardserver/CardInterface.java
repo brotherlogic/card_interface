@@ -13,6 +13,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Options;
+
 import card.CardOuterClass.Card;
 import card.CardOuterClass.DeleteRequest;
 import card.CardServiceGrpc;
@@ -21,8 +28,13 @@ public class CardInterface extends JFrame {
 
 	JPanel mainPanel;
 	static boolean refresh = true;
+	static String host;
+	static int port;
 
-	public CardInterface() {
+	public CardInterface(String serverHost, int serverPort) {
+		host = serverHost;
+		port = serverPort;
+
 		mainPanel = new JPanel();
 		this.add(mainPanel);
 	}
@@ -90,8 +102,19 @@ public class CardInterface extends JFrame {
 		}
 	}
 
-	public static void main(String[] args) {
-		final CardInterface mine = new CardInterface();
+	public static void main(String[] args) throws Exception {
+		Option optionHost = OptionBuilder.withLongOpt("host").hasArg()
+				.withDescription("Hostname of server").create("h");
+		Option optionPort = OptionBuilder.withLongOpt("port").hasArg()
+				.withDescription("Port number of server").create("p");
+		Options options = new Options();
+		options.addOption(optionHost);
+		options.addOption(optionPort);
+		CommandLineParser parser = new GnuParser();
+		CommandLine line = parser.parse(options, args);
+
+		final CardInterface mine = new CardInterface(line.getOptionValue("h"),
+				Integer.parseInt(line.getOptionValue("p")));
 		mine.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mine.setSize(500, 500);
 		mine.setLocationRelativeTo(null);
