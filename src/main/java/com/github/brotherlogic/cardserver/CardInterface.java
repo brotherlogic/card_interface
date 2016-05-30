@@ -140,6 +140,9 @@ public class CardInterface extends JFrame {
 		mine.setLocationRelativeTo(null);
 		mine.setVisible(true);
 
+		// Expand to the full screen
+		mine.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
 		CardReader reader = new RPCCardReader(host, port);
 
 		reader.readCardsBackground(new CardsReturned() {
