@@ -1,10 +1,13 @@
 package com.github.brotherlogic.cardserver;
 
 import java.awt.Desktop;
+import java.awt.Image;
 import java.net.URI;
+import java.net.URL;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -74,6 +77,7 @@ public class CardInterface extends JFrame {
 
 					refresh = true;
 				} catch (Exception e) {
+
 					JLabel label = new JLabel(e.getMessage());
 					mainPanel.removeAll();
 					mainPanel.invalidate();
@@ -87,10 +91,25 @@ public class CardInterface extends JFrame {
 				JOptionPane.showMessageDialog(null, "Unable to bring up browser");
 			}
 		} else {
-			JLabel label = new JLabel(card.getText());
-			mainPanel.removeAll();
-			mainPanel.invalidate();
-			mainPanel.add(label);
+			// Display the image if it has one
+			if (card.getImage().length() > 0) {
+				mainPanel.removeAll();
+				mainPanel.invalidate();
+
+				try {
+					Image img = ImageIO.read(new URL(card.getImage()));
+					GraphicsPanel panel = new GraphicsPanel(img);
+					mainPanel.add(panel);
+				} catch (Exception e) {
+					JLabel label = new JLabel(e.getLocalizedMessage());
+					mainPanel.add(label);
+				}
+			} else {
+				JLabel label = new JLabel(card.getText());
+				mainPanel.removeAll();
+				mainPanel.invalidate();
+				mainPanel.add(label);
+			}
 
 			mainPanel.revalidate();
 			mainPanel.repaint();
