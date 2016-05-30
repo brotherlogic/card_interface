@@ -137,7 +137,7 @@ public class CardInterface extends JFrame {
 
 		final CardInterface mine = new CardInterface(host, port);
 		mine.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mine.setSize(500, 500);
+		mine.setSize(480, 800);
 		mine.setLocationRelativeTo(null);
 		mine.setVisible(true);
 
