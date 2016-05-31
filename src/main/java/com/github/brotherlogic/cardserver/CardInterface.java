@@ -145,7 +145,7 @@ public class CardInterface extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				mine.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				// mine.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			}
 		});
 
