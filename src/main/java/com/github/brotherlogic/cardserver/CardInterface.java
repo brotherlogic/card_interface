@@ -2,6 +2,8 @@ package com.github.brotherlogic.cardserver;
 
 import java.awt.Desktop;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URI;
 import java.net.URL;
 import java.util.List;
@@ -22,6 +24,7 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 
 import card.CardOuterClass.Card;
+import card.CardOuterClass.Card.Action;
 import card.CardOuterClass.DeleteRequest;
 import card.CardServiceGrpc;
 import io.grpc.ManagedChannel;
@@ -57,8 +60,8 @@ public class CardInterface extends JFrame {
 
 	}
 
-	public void showCard(Card card) {
-
+	public void showCard(final Card card) {
+		System.out.println("SHOWING " + card);
 		if (card.getAction() == Card.Action.VISITURL) {
 
 			// Delete the card from the server
@@ -101,6 +104,21 @@ public class CardInterface extends JFrame {
 					Image img = ImageIO.read(new URL(card.getImage()));
 					GraphicsPanel panel = new GraphicsPanel(img);
 					mainPanel.add(panel);
+
+					panel.addMouseListener(new MouseAdapter() {
+
+						@Override
+						public void mouseClicked(MouseEvent e) {
+
+							deleteCard(card.getHash());
+
+							// Add a like card
+							Card c = Card.newBuilder().setText(card.getText()).setAction(Action.RATE)
+									.addActionMetadata("1").build();
+							System.out.println("BUILD BUILD:" + c);
+							new CardWriter().writeCard(c);
+						}
+					});
 				} catch (Exception e) {
 					JLabel label = new JLabel(e.getLocalizedMessage());
 					mainPanel.add(label);
@@ -137,7 +155,7 @@ public class CardInterface extends JFrame {
 
 		final CardInterface mine = new CardInterface(host, port);
 		mine.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mine.setSize(480, 800);
+		mine.setSize(800, 480);
 		mine.setLocationRelativeTo(null);
 		mine.setVisible(true);
 

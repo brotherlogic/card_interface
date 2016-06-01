@@ -6,12 +6,15 @@ import card.CardOuterClass.Card;
 import card.CardOuterClass.CardList;
 import card.CardServiceGrpc;
 import card.CardServiceGrpc.CardServiceBlockingStub;
+import card.CardServiceGrpc.CardServiceBlockingStub;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
 public class CardWriter {
 
 	public void writeCard(Card card) {
+		System.out.println("WRITING " + card + " to " + CardInterface.host + ":" + CardInterface.port);
+
 		ManagedChannel channel = ManagedChannelBuilder.forAddress(CardInterface.host, CardInterface.port)
 				.usePlaintext(true).build();
 		CardServiceBlockingStub blockingStub = CardServiceGrpc.newBlockingStub(channel);
