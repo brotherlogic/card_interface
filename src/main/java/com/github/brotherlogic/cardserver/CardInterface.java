@@ -1,5 +1,8 @@
 package com.github.brotherlogic.cardserver;
 
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+
 import java.awt.Desktop;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
@@ -27,8 +30,6 @@ import card.CardOuterClass.Card;
 import card.CardOuterClass.Card.Action;
 import card.CardOuterClass.DeleteRequest;
 import card.CardServiceGrpc;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 
 public class CardInterface extends JFrame {
 
@@ -46,18 +47,39 @@ public class CardInterface extends JFrame {
 	}
 
 	public void deleteCard(String hash) {
-		ManagedChannel channel = ManagedChannelBuilder.forAddress(CardInterface.host, CardInterface.port)
+		ManagedChannel channel = ManagedChannelBuilder
+				.forAddress(CardInterface.host, CardInterface.port)
 				.usePlaintext(true).build();
-		CardServiceGrpc.CardServiceBlockingStub blockingStub = CardServiceGrpc.newBlockingStub(channel);
+		CardServiceGrpc.CardServiceBlockingStub blockingStub = CardServiceGrpc
+				.newBlockingStub(channel);
 
 		try {
-			DeleteRequest req = DeleteRequest.newBuilder().setHash(hash).build();
+			DeleteRequest req = DeleteRequest.newBuilder().setHash(hash)
+					.build();
 			blockingStub.deleteCards(req);
 			channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	private GraphicsPanel showCardImage(final Card card) {
+		if (card.getImage().length() > 0) {
+			mainPanel.removeAll();
+			mainPanel.invalidate();
+
+			try {
+				Image img = ImageIO.read(new URL(card.getImage()));
+				GraphicsPanel panel = new GraphicsPanel(img);
+				mainPanel.add(panel);
+				return panel;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return null;
 	}
 
 	public void showCard(final Card card) {
@@ -76,7 +98,8 @@ public class CardInterface extends JFrame {
 					PortListener listener = new PortListener(8090);
 					String response = listener.listen();
 
-					Card strCard = Card.newBuilder().setText(response).setHash("instagramauthresp").build();
+					Card strCard = Card.newBuilder().setText(response)
+							.setHash("instagramauthresp").build();
 					new CardWriter().writeCard(strCard);
 
 					refresh = true;
@@ -92,9 +115,18 @@ public class CardInterface extends JFrame {
 					e.printStackTrace();
 				}
 			} else {
-				JOptionPane.showMessageDialog(null, "Unable to bring up browser");
+				JOptionPane.showMessageDialog(null,
+						"Unable to bring up browser");
 			}
-		} else {
+		} else if (card.getAction() == Card.Action.DISMISS) {
+			GraphicsPanel panel = showCardImage(card);
+			panel.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					deleteCard(card.getHash());
+				}
+			});
+		} else if (card.getAction() == Card.Action.RATE) {
 			// Display the image if it has one
 			if (card.getImage().length() > 0) {
 				mainPanel.removeAll();
@@ -113,9 +145,9 @@ public class CardInterface extends JFrame {
 							deleteCard(card.getHash());
 
 							// Add a like card
-							Card c = Card.newBuilder().setText(card.getText()).setAction(Action.RATE)
+							Card c = Card.newBuilder().setText(card.getText())
+									.setAction(Action.RATE)
 									.addActionMetadata("1").build();
-							System.out.println("BUILD BUILD:" + c);
 							new CardWriter().writeCard(c);
 						}
 					});
@@ -136,10 +168,10 @@ public class CardInterface extends JFrame {
 	}
 
 	public static void main(String[] args) throws Exception {
-		Option optionHost = OptionBuilder.withLongOpt("host").hasArg().withDescription("Hostname of server")
-				.create("h");
-		Option optionPort = OptionBuilder.withLongOpt("port").hasArg().withDescription("Port number of server")
-				.create("p");
+		Option optionHost = OptionBuilder.withLongOpt("host").hasArg()
+				.withDescription("Hostname of server").create("h");
+		Option optionPort = OptionBuilder.withLongOpt("port").hasArg()
+				.withDescription("Port number of server").create("p");
 		Options options = new Options();
 		options.addOption(optionHost);
 		options.addOption(optionPort);
@@ -177,8 +209,11 @@ public class CardInterface extends JFrame {
 				if (cards.size() > 0)
 					mine.showCard(cards.get(0));
 				else
-					mine.showCard(Card.newBuilder()
-							.setText("No Cards To Show (" + CardInterface.host + ":" + CardInterface.port + ")")
+					mine.showCard(Card
+							.newBuilder()
+							.setText(
+									"No Cards To Show (" + CardInterface.host
+											+ ":" + CardInterface.port + ")")
 							.build());
 			}
 		});
