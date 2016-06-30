@@ -20,11 +20,9 @@ public class PortListener {
 
 		ServerSocket sock = new ServerSocket(portNumber);
 		Socket client = sock.accept();
-		BufferedReader br = new BufferedReader(new InputStreamReader(
-				client.getInputStream()));
+		BufferedReader br = new BufferedReader(new InputStreamReader(client.getInputStream()));
 		boolean read = false;
-		for (String line = br.readLine(); line != null && !read; line = br
-				.readLine())
+		for (String line = br.readLine(); line != null && !read; line = br.readLine())
 			if (line.startsWith("GET")) {
 				retString += line + "\n";
 				read = true;
