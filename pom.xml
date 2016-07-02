@@ -113,7 +113,7 @@
         <artifactId>maven-release-plugin</artifactId>
         <version>2.5.1</version>
         <configuration>
-          <goals>install</goals>
+          <goals>deploy</goals>
         </configuration>
       </plugin>
       
@@ -138,6 +138,15 @@
             <descriptorRef>jar-with-dependencies</descriptorRef>
           </descriptorRefs>
         </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id> <!-- this is used for inheritance merges -->
+            <phase>package</phase> <!-- bind to the packaging phase -->
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
