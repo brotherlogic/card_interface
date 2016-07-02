@@ -131,7 +131,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>com.github.brotherlogic.cardserver.CardInterface</mainClass>
+              <mainClass>com.github.brotherlogic.cardserver.CardInterfaceServer</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>
