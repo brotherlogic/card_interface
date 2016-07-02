@@ -5,7 +5,7 @@
   <groupId>com.github.brotherlogic.cardserver</groupId>
   <artifactId>card_ui</artifactId>
   <packaging>jar</packaging>
-  <version>0.39</version>
+  <version>0.40-SNAPSHOT</version>
 
   <name>${project.groupId}:${project.artifactId}</name>
   <description>Interface for consuming cards</description>
@@ -50,7 +50,7 @@
     <connection>scm:git:git@github.com:brotherogic/card_inteface.git</connection>
     <developerConnection>scm:git:git@github.com:brotherlogic/card_interface.git</developerConnection>
     <url>git@github.com:brotherlogic/card_interface.git</url>
-    <tag>card_ui-0.39</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <prerequisites>
