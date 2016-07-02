@@ -1,5 +1,6 @@
 package com.github.brotherlogic.cardserver;
 
+import java.awt.EventQueue;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,15 +33,32 @@ public class CardInterfaceServer extends JavaServer {
 		return new LinkedList<BindableService>();
 	}
 
-	public void displayScreen() {
+	private void displayScreen() {
 		mainDisplay.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainDisplay.setSize(800, 480);
 		mainDisplay.setLocationRelativeTo(null);
 		mainDisplay.setVisible(true);
 	}
 
+	private void showCard(final Card c) {
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				mainDisplay.showCard(c);
+			}
+		});
+	}
+
 	@Override
 	public void localServe() {
+
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				displayScreen();
+			}
+		});
+
 		System.out.println("PORT = " + getPort("cardserver"));
 		CardReader reader = new RPCCardReader(getHost("cardserver"), getPort("cardserver"));
 
@@ -50,10 +68,10 @@ public class CardInterfaceServer extends JavaServer {
 				System.out.println("Seen " + cards);
 
 				if (cards.size() > 0)
-					mainDisplay.showCard(cards.get(0));
+					showCard(cards.get(0));
 				else
-					mainDisplay.showCard(Card.newBuilder()
-							.setText("No Cards To Show (" + getHost() + ":" + getPort() + ")").build());
+					showCard(Card.newBuilder().setText("No Cards To Show (" + getHost() + ":" + getPort() + ")")
+							.build());
 			}
 		});
 
