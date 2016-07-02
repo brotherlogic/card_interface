@@ -65,7 +65,7 @@ public class CardInterfaceServer extends JavaServer {
 		reader.readCardsBackground(new CardsReturned() {
 			@Override
 			public void processCards(List<Card> cards) {
-				System.out.println("Seen " + cards);
+				Log(cards.size());
 
 				if (cards.size() > 0)
 					showCard(cards.get(0));
