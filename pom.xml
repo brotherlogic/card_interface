@@ -17,6 +17,13 @@
     <maven.compiler.target>1.7</maven.compiler.target>
   </properties>
 
+  <distributionManagement>
+    <repository>
+      <id>ssh-repository</id>
+      <url>scpexe://simon@10.0.1.17/home/simon/codestore/${project.artifactId}/</url>
+    </repository>
+  </distributionManagement>
+  
   <repositories>
     <repository>
       <id>project.local</id>
@@ -71,6 +78,11 @@
   <build>
     <extensions>
       <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ssh-external</artifactId>
+        <version>1.0-beta-6</version>
+      </extension>
+      <extension>
 	<groupId>kr.motd.maven</groupId>
 	<artifactId>os-maven-plugin</artifactId>
 	<version>1.4.1.Final</version>
@@ -110,7 +122,7 @@
         <artifactId>maven-deploy-plugin</artifactId>
         <version>2.7</version>
         <configuration>
-          <skip>true</skip>
+          <skip>false</skip>
         </configuration>
       </plugin>
       
