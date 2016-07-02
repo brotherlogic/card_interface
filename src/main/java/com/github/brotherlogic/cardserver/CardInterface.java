@@ -66,7 +66,7 @@ public class CardInterface extends JFrame {
 	}
 
 	public void showCard(final Card card) {
-		System.out.println("SHOWING " + card);
+		System.out.println("SHOWING " + card + " GIVEN " + card.getAction());
 		if (card.getAction() == Card.Action.VISITURL) {
 
 			// Delete the card from the server
@@ -135,15 +135,16 @@ public class CardInterface extends JFrame {
 					JLabel label = new JLabel(e.getLocalizedMessage());
 					mainPanel.add(label);
 				}
-			} else {
-				JLabel label = new JLabel(card.getText());
-				mainPanel.removeAll();
-				mainPanel.invalidate();
-				mainPanel.add(label);
 			}
-
-			mainPanel.revalidate();
-			mainPanel.repaint();
+		} else {
+			System.out.println("Showing the text");
+			JLabel label = new JLabel(card.getText());
+			mainPanel.removeAll();
+			mainPanel.invalidate();
+			mainPanel.add(label);
 		}
+
+		mainPanel.revalidate();
+		mainPanel.repaint();
 	}
 }
