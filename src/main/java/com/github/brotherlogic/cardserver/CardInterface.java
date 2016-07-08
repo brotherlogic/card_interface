@@ -137,11 +137,39 @@ public class CardInterface extends JFrame {
 				}
 			}
 		} else {
-			System.out.println("Showing the text");
-			JLabel label = new JLabel(card.getText());
-			mainPanel.removeAll();
-			mainPanel.invalidate();
-			mainPanel.add(label);
+			if (card.getImage().length() > 0) {
+				mainPanel.removeAll();
+				mainPanel.invalidate();
+
+				try {
+					Image img = ImageIO.read(new URL(card.getImage()));
+					GraphicsPanel panel = new GraphicsPanel(img);
+					mainPanel.add(panel);
+
+					panel.addMouseListener(new MouseAdapter() {
+
+						@Override
+						public void mouseClicked(MouseEvent e) {
+
+							deleteCard(card.getHash());
+
+							// Add a like card
+							Card c = Card.newBuilder().setText(card.getText()).setAction(Action.RATE)
+									.addActionMetadata("1").build();
+							new CardWriter().writeCard(c);
+						}
+					});
+				} catch (Exception e) {
+					JLabel label = new JLabel(e.getLocalizedMessage());
+					mainPanel.add(label);
+				}
+			} else {
+				System.out.println("Showing the text");
+				JLabel label = new JLabel(card.getText());
+				mainPanel.removeAll();
+				mainPanel.invalidate();
+				mainPanel.add(label);
+			}
 		}
 
 		mainPanel.revalidate();

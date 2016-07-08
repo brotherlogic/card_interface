@@ -41,6 +41,7 @@ public class RPCCardReader extends CardReader {
 			e.printStackTrace();
 		}
 
+		System.out.println("READ: " + cards);
 		return cards;
 	}
 }
