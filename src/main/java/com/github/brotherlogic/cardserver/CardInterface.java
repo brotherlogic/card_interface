@@ -102,12 +102,19 @@ public class CardInterface extends JFrame {
 			}
 		} else if (card.getAction() == Card.Action.DISMISS) {
 			GraphicsPanel panel = showCardImage(card);
-			panel.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					deleteCard(card.getHash());
-				}
-			});
+			if (panel != null) {
+				panel.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						deleteCard(card.getHash());
+					}
+				});
+			} else {
+				JLabel label = new JLabel(card.getText());
+				mainPanel.removeAll();
+				mainPanel.invalidate();
+				mainPanel.add(label);
+			}
 		} else if (card.getAction() == Card.Action.RATE) {
 			// Display the image if it has one
 			if (card.getImage().length() > 0) {
