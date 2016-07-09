@@ -21,7 +21,7 @@ import io.grpc.BindableService;
 
 public class CardInterfaceServer extends JavaServer {
 
-	CardInterface mainDisplay = new CardInterface();
+	CardInterface mainDisplay = new CardInterface(this);
 
 	@Override
 	public String getServerName() {
