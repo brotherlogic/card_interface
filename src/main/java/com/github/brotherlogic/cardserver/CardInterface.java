@@ -25,11 +25,12 @@ public class CardInterface extends JFrame {
 
 	JPanel mainPanel;
 	static boolean refresh = true;
-	CardInterfaceServer server;
+	private CardInterfaceServer server;
 
-	public CardInterface() {
+	public CardInterface(CardInterfaceServer server) {
 		mainPanel = new JPanel();
 		this.add(mainPanel);
+		this.server = server;
 	}
 
 	public void deleteCard(String hash) {
