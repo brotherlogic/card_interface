@@ -16,7 +16,17 @@ public class GraphicsPanel extends JPanel {
 
 	@Override
 	public void paint(Graphics g) {
-		g.drawImage(img, 0, 0, null);
+
+		int imgHeight = img.getHeight(null);
+		int imgWidth = img.getWidth(null);
+
+		double scaleFactor = (imgHeight + 0.0) / this.getHeight();
+
+		int scaledHeight = (int) (imgHeight / scaleFactor);
+		int scaledWidth = (int) (imgHeight / scaleFactor);
+
+		Image scaledImg = img.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+		g.drawImage(scaledImg, (this.getWidth() - scaledWidth) / 2, 0, null);
 	}
 
 	@Override
