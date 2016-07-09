@@ -114,6 +114,12 @@ public class CardInterface extends JFrame {
 				mainPanel.removeAll();
 				mainPanel.invalidate();
 				mainPanel.add(label);
+				label.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						deleteCard(card.getHash());
+					}
+				});
 			}
 		} else if (card.getAction() == Card.Action.RATE) {
 			// Display the image if it has one
