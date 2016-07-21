@@ -42,6 +42,8 @@ public class CardInterface extends JFrame {
 			DeleteRequest req = DeleteRequest.newBuilder().setHash(hash).build();
 			blockingStub.deleteCards(req);
 			channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+
+			showCard(Card.newBuilder().setText("Waiting for card..").build());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
