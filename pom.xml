@@ -71,7 +71,7 @@
     <dependency>
       <groupId>com.github.brotherlogic.javaserver</groupId>
       <artifactId>javaserver</artifactId>
-      <version>0.14</version>
+      <version>0.15</version>
     </dependency>
   </dependencies>
 
