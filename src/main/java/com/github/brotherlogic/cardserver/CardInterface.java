@@ -69,7 +69,9 @@ public class CardInterface extends JFrame {
 	}
 
 	public void showCard(final Card card) {
-		System.out.println("SHOWING " + card + " GIVEN " + card.getAction());
+
+		server.Log("Showing Card: " + card.getText());
+
 		if (card.getAction() == Card.Action.VISITURL) {
 
 			// Delete the card from the server
