@@ -13,7 +13,12 @@ public class CardWriter {
 
 	CardInterfaceServer server;
 
+	public CardWriter(CardInterfaceServer server) {
+		this.server = server;
+	}
+
 	public void writeCard(Card card) {
+		System.out.println("Writing card: " + card);
 		ManagedChannel channel = ManagedChannelBuilder
 				.forAddress(server.getHost("cardserver"), server.getPort("cardserver")).usePlaintext(true).build();
 		CardServiceBlockingStub blockingStub = CardServiceGrpc.newBlockingStub(channel);

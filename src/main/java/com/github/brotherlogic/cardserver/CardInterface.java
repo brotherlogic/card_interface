@@ -87,7 +87,7 @@ public class CardInterface extends JFrame {
 					String response = listener.listen();
 
 					Card strCard = Card.newBuilder().setText(response).setHash("instagramauthresp").build();
-					new CardWriter().writeCard(strCard);
+					new CardWriter(server).writeCard(strCard);
 
 					refresh = true;
 				} catch (Exception e) {
@@ -112,7 +112,7 @@ public class CardInterface extends JFrame {
 					public void mouseClicked(MouseEvent e) {
 						deleteCard(card.getHash());
 						Card toWrite = card.getResult();
-						new CardWriter().writeCard(toWrite);
+						new CardWriter(server).writeCard(toWrite);
 					}
 				});
 			} else {
@@ -148,7 +148,7 @@ public class CardInterface extends JFrame {
 							// Add a like card
 							Card c = Card.newBuilder().setText(card.getText()).setAction(Action.RATE)
 									.addActionMetadata("1").build();
-							new CardWriter().writeCard(c);
+							new CardWriter(server).writeCard(c);
 						}
 					});
 				} catch (Exception e) {
@@ -176,7 +176,7 @@ public class CardInterface extends JFrame {
 							// Add a like card
 							Card c = Card.newBuilder().setText(card.getText()).setAction(Action.RATE)
 									.addActionMetadata("1").build();
-							new CardWriter().writeCard(c);
+							new CardWriter(server).writeCard(c);
 						}
 					});
 				} catch (Exception e) {
