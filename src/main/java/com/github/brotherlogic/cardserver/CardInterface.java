@@ -1,5 +1,6 @@
 package com.github.brotherlogic.cardserver;
 
+import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
@@ -28,7 +29,7 @@ public class CardInterface extends JFrame {
 	private CardInterfaceServer server;
 
 	public CardInterface(CardInterfaceServer server) {
-		mainPanel = new JPanel();
+		mainPanel = new JPanel(new BorderLayout());
 		this.add(mainPanel);
 		this.server = server;
 	}
@@ -70,6 +71,7 @@ public class CardInterface extends JFrame {
 
 	public void showCard(final Card card) {
 
+		System.out.println("CARD = " + card);
 		server.Log("Showing Card: " + card.getText());
 
 		if (card.getAction() == Card.Action.VISITURL) {
@@ -128,6 +130,7 @@ public class CardInterface extends JFrame {
 				});
 			}
 		} else if (card.getAction() == Card.Action.RATE) {
+			System.out.println("RATE = " + card);
 			// Display the image if it has one
 			if (card.getImage().length() > 0) {
 				mainPanel.removeAll();
@@ -136,21 +139,19 @@ public class CardInterface extends JFrame {
 				try {
 					Image img = ImageIO.read(new URL(card.getImage()));
 					GraphicsPanel panel = new GraphicsPanel(img);
-					mainPanel.add(panel);
-
-					panel.addMouseListener(new MouseAdapter() {
-
+					RatingPanel rPanel = new RatingPanel(new ProcessRating() {
 						@Override
-						public void mouseClicked(MouseEvent e) {
-
+						public void processRating(int rating) {
+							Card toWrite = Card.newBuilder().mergeFrom(card.getResult()).addActionMetadata("" + rating)
+									.build();
+							new CardWriter(server).writeCard(toWrite);
 							deleteCard(card.getHash());
-
-							// Add a like card
-							Card c = Card.newBuilder().setText(card.getText()).setAction(Action.RATE)
-									.addActionMetadata("1").build();
-							new CardWriter(server).writeCard(c);
 						}
 					});
+					mainPanel.add(panel);
+					mainPanel.add(rPanel, BorderLayout.EAST);
+					System.out.println("Showing");
+
 				} catch (Exception e) {
 					JLabel label = new JLabel(e.getLocalizedMessage());
 					mainPanel.add(label);

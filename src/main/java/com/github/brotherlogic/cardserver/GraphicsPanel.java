@@ -31,7 +31,11 @@ public class GraphicsPanel extends JPanel {
 
 	@Override
 	public Dimension getPreferredSize() {
-		return getParent().getSize();
+		return new Dimension(480, 480);
 	}
 
+	@Override
+	public Dimension getMaximumSize() {
+		return getPreferredSize();
+	}
 }
