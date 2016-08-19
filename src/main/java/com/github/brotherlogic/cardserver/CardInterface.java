@@ -156,6 +156,21 @@ public class CardInterface extends JFrame {
 					JLabel label = new JLabel(e.getLocalizedMessage());
 					mainPanel.add(label);
 				}
+			} else {
+				JLabel label = new JLabel(card.getText(), JLabel.CENTER);
+				mainPanel.removeAll();
+				mainPanel.invalidate();
+				RatingPanel rPanel = new RatingPanel(new ProcessRating() {
+					@Override
+					public void processRating(int rating) {
+						Card toWrite = Card.newBuilder().mergeFrom(card.getResult()).addActionMetadata("" + rating)
+								.build();
+						new CardWriter(server).writeCard(toWrite);
+						deleteCard(card.getHash());
+					}
+				});
+				mainPanel.add(label, BorderLayout.NORTH);
+				mainPanel.add(rPanel, BorderLayout.EAST);
 			}
 		} else {
 			if (card.getImage().length() > 0) {
