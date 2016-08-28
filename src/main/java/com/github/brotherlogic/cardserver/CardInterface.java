@@ -123,12 +123,20 @@ public class CardInterface extends JFrame {
 						new CardWriter(server).writeCard(toWrite);
 					}
 				});
+				panel.setBounds(400 - 240, 0, 480, 480);
+				mainPanel.add(panel);
+				mainPanel.invalidate();
+				mainPanel.revalidate();
+				mainPanel.repaint();
 			} else {
 				JLabel label = new JLabel(card.getText(), JLabel.CENTER);
 				label.setBounds(0, 0, 800, 480);
 				mainPanel.removeAll();
-				mainPanel.invalidate();
 				mainPanel.add(label);
+				mainPanel.invalidate();
+				mainPanel.revalidate();
+				mainPanel.repaint();
+				System.out.println("SHOWING " + label.getText());
 				label.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
