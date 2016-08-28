@@ -1,7 +1,6 @@
 package com.github.brotherlogic.cardserver;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
@@ -18,7 +17,8 @@ public class RatingPanel extends JPanel {
 		for (int i = 1; i < 6; i++) {
 			JPanel panel = new JPanel(new BorderLayout());
 			JLabel label = new JLabel("" + i, JLabel.CENTER);
-			panel.setBackground(Color.RED);
+			label.setHorizontalAlignment(JLabel.CENTER);
+			label.setVerticalAlignment(JLabel.CENTER);
 			final int index = i;
 			System.out.println("Adding listener");
 			panel.addMouseListener(new MouseAdapter() {
@@ -35,7 +35,7 @@ public class RatingPanel extends JPanel {
 
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(100, 100);
+		return new Dimension(100, 480);
 	}
 }
 

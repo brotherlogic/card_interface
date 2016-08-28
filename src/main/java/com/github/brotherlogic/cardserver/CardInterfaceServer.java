@@ -1,5 +1,7 @@
 package com.github.brotherlogic.cardserver;
 
+import io.grpc.BindableService;
+
 import java.awt.EventQueue;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -14,10 +16,9 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 
-import com.github.brotherlogic.javaserver.JavaServer;
-
 import card.CardOuterClass.Card;
-import io.grpc.BindableService;
+
+import com.github.brotherlogic.javaserver.JavaServer;
 
 public class CardInterfaceServer extends JavaServer {
 
@@ -35,8 +36,9 @@ public class CardInterfaceServer extends JavaServer {
 
 	private void displayScreen() {
 		mainDisplay.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mainDisplay.setSize(800, 480);
+		mainDisplay.pack();
 		mainDisplay.setLocationRelativeTo(null);
+		mainDisplay.revalidate();
 		mainDisplay.setVisible(true);
 	}
 
@@ -59,8 +61,8 @@ public class CardInterfaceServer extends JavaServer {
 			}
 		});
 
-		System.out.println("PORT = " + getPort("cardserver"));
-		CardReader reader = new RPCCardReader(getHost("cardserver"), getPort("cardserver"));
+		CardReader reader = new RPCCardReader(getHost("cardserver"),
+				getPort("cardserver"));
 
 		reader.readCardsBackground(new CardsReturned() {
 			@Override
@@ -70,18 +72,21 @@ public class CardInterfaceServer extends JavaServer {
 				if (cards.size() > 0)
 					showCard(cards.get(0));
 				else
-					showCard(Card.newBuilder().setText("No Cards To Show (" + getHost() + ":" + getPort() + ")")
-							.build());
+					showCard(Card
+							.newBuilder()
+							.setText(
+									"No Cards To Show (" + getHost() + ":"
+											+ getPort() + ")").build());
 			}
 		});
 
 	}
 
 	public static void main(String[] args) throws Exception {
-		Option optionHost = OptionBuilder.withLongOpt("host").hasArg().withDescription("Hostname of server")
-				.create("h");
-		Option optionPort = OptionBuilder.withLongOpt("port").hasArg().withDescription("Port number of server")
-				.create("p");
+		Option optionHost = OptionBuilder.withLongOpt("host").hasArg()
+				.withDescription("Hostname of server").create("h");
+		Option optionPort = OptionBuilder.withLongOpt("port").hasArg()
+				.withDescription("Port number of server").create("p");
 		Options options = new Options();
 		options.addOption(optionHost);
 		options.addOption(optionPort);
