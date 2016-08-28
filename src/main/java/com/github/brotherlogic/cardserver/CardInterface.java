@@ -1,8 +1,13 @@
 package com.github.brotherlogic.cardserver;
 
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+
 import java.awt.BorderLayout;
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URI;
@@ -19,28 +24,34 @@ import card.CardOuterClass.Card;
 import card.CardOuterClass.Card.Action;
 import card.CardOuterClass.DeleteRequest;
 import card.CardServiceGrpc;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 
 public class CardInterface extends JFrame {
 
 	JPanel mainPanel;
+	Insets insets;
 	static boolean refresh = true;
 	private CardInterfaceServer server;
 
 	public CardInterface(CardInterfaceServer server) {
-		mainPanel = new JPanel(new BorderLayout());
+		mainPanel = new JPanel();
+		mainPanel.setLayout(null);
+		mainPanel.setPreferredSize(new Dimension(800, 480));
+		insets = mainPanel.getInsets();
 		this.add(mainPanel);
 		this.server = server;
 	}
 
 	public void deleteCard(String hash) {
 		ManagedChannel channel = ManagedChannelBuilder
-				.forAddress(server.getHost("cardserver"), server.getPort("cardserver")).usePlaintext(true).build();
-		CardServiceGrpc.CardServiceBlockingStub blockingStub = CardServiceGrpc.newBlockingStub(channel);
+				.forAddress(server.getHost("cardserver"),
+						server.getPort("cardserver")).usePlaintext(true)
+				.build();
+		CardServiceGrpc.CardServiceBlockingStub blockingStub = CardServiceGrpc
+				.newBlockingStub(channel);
 
 		try {
-			DeleteRequest req = DeleteRequest.newBuilder().setHash(hash).build();
+			DeleteRequest req = DeleteRequest.newBuilder().setHash(hash)
+					.build();
 			blockingStub.deleteCards(req);
 			channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
 
@@ -88,7 +99,8 @@ public class CardInterface extends JFrame {
 					PortListener listener = new PortListener(8090);
 					String response = listener.listen();
 
-					Card strCard = Card.newBuilder().setText(response).setHash("instagramauthresp").build();
+					Card strCard = Card.newBuilder().setText(response)
+							.setHash("instagramauthresp").build();
 					new CardWriter(server).writeCard(strCard);
 
 					refresh = true;
@@ -104,7 +116,8 @@ public class CardInterface extends JFrame {
 					e.printStackTrace();
 				}
 			} else {
-				JOptionPane.showMessageDialog(null, "Unable to bring up browser");
+				JOptionPane.showMessageDialog(null,
+						"Unable to bring up browser");
 			}
 		} else if (card.getAction() == Card.Action.DISMISS) {
 			GraphicsPanel panel = showCardImage(card);
@@ -142,14 +155,17 @@ public class CardInterface extends JFrame {
 					RatingPanel rPanel = new RatingPanel(new ProcessRating() {
 						@Override
 						public void processRating(int rating) {
-							Card toWrite = Card.newBuilder().mergeFrom(card.getResult()).addActionMetadata("" + rating)
-									.build();
+							Card toWrite = Card.newBuilder()
+									.mergeFrom(card.getResult())
+									.addActionMetadata("" + rating).build();
 							new CardWriter(server).writeCard(toWrite);
 							deleteCard(card.getHash());
 						}
 					});
 					mainPanel.add(panel);
-					mainPanel.add(rPanel, BorderLayout.EAST);
+					panel.setBounds(400 - 240, 0, 480, 480);
+					mainPanel.add(rPanel);
+					rPanel.setBounds(800 - 100, 0, 100, 480);
 					System.out.println("Showing");
 
 				} catch (Exception e) {
@@ -163,8 +179,9 @@ public class CardInterface extends JFrame {
 				RatingPanel rPanel = new RatingPanel(new ProcessRating() {
 					@Override
 					public void processRating(int rating) {
-						Card toWrite = Card.newBuilder().mergeFrom(card.getResult()).addActionMetadata("" + rating)
-								.build();
+						Card toWrite = Card.newBuilder()
+								.mergeFrom(card.getResult())
+								.addActionMetadata("" + rating).build();
 						new CardWriter(server).writeCard(toWrite);
 						deleteCard(card.getHash());
 					}
@@ -190,7 +207,8 @@ public class CardInterface extends JFrame {
 							deleteCard(card.getHash());
 
 							// Add a like card
-							Card c = Card.newBuilder().setText(card.getText()).setAction(Action.RATE)
+							Card c = Card.newBuilder().setText(card.getText())
+									.setAction(Action.RATE)
 									.addActionMetadata("1").build();
 							new CardWriter(server).writeCard(c);
 						}

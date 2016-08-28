@@ -22,10 +22,14 @@ public class GraphicsPanel extends JPanel {
 
 		double scaleFactor = (imgHeight + 0.0) / this.getHeight();
 
-		int scaledHeight = (int) (imgHeight / scaleFactor);
-		int scaledWidth = (int) (imgWidth / scaleFactor);
+		int scaledHeight = (int) (Math.ceil(imgHeight / scaleFactor));
+		int scaledWidth = (int) (Math.ceil(imgWidth / scaleFactor));
 
-		Image scaledImg = img.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+		System.out.println("SCALED = " + scaledHeight + "," + this.getHeight());
+		Image scaledImg = img.getScaledInstance(scaledWidth, scaledHeight,
+				Image.SCALE_SMOOTH);
+		System.out.println("DRAWING: " + scaledImg.getHeight(null) + ","
+				+ scaledImg.getWidth(null));
 		g.drawImage(scaledImg, (this.getWidth() - scaledWidth) / 2, 0, null);
 	}
 
