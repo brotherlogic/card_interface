@@ -141,6 +141,8 @@ public class CardInterface extends JFrame {
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						deleteCard(card.getHash());
+						Card toWrite = card.getResult();
+						new CardWriter(server).writeCard(toWrite);
 					}
 				});
 			}
