@@ -177,7 +177,7 @@ public class CardInterface extends JFrame {
 				}
 			} else {
 				JLabel label = new JLabel(card.getText(), JLabel.CENTER);
-				label.setBounds(0, 0, 800, 480);
+				label.setBounds(400 - 240, 0, 480, 480);
 				mainPanel.removeAll();
 				mainPanel.invalidate();
 				RatingPanel rPanel = new RatingPanel(new ProcessRating() {
@@ -189,8 +189,9 @@ public class CardInterface extends JFrame {
 						deleteCard(card.getHash());
 					}
 				});
-				mainPanel.add(label, BorderLayout.NORTH);
-				mainPanel.add(rPanel, BorderLayout.EAST);
+				rPanel.setBounds(800 - 100, 0, 100, 480);
+				mainPanel.add(label);
+				mainPanel.add(rPanel);
 			}
 		} else {
 			if (card.getImage().length() > 0) {
