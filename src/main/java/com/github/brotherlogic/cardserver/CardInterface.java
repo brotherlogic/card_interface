@@ -177,6 +177,7 @@ public class CardInterface extends JFrame {
 				}
 			} else {
 				JLabel label = new JLabel(card.getText(), JLabel.CENTER);
+				label.setBounds(0, 0, 800, 480);
 				mainPanel.removeAll();
 				mainPanel.invalidate();
 				RatingPanel rPanel = new RatingPanel(new ProcessRating() {
