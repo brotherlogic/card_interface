@@ -1,7 +1,5 @@
 package com.github.brotherlogic.cardserver;
 
-import io.grpc.BindableService;
-
 import java.awt.EventQueue;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -16,13 +14,19 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 
-import card.CardOuterClass.Card;
-
 import com.github.brotherlogic.javaserver.JavaServer;
+
+import card.CardOuterClass.Card;
+import io.grpc.BindableService;
 
 public class CardInterfaceServer extends JavaServer {
 
 	CardInterface mainDisplay = new CardInterface(this);
+	Card.Channel mainChan;
+
+	public CardInterfaceServer(Card.Channel chan) {
+		mainChan = chan;
+	}
 
 	@Override
 	public String getServerName() {
@@ -61,8 +65,7 @@ public class CardInterfaceServer extends JavaServer {
 			}
 		});
 
-		CardReader reader = new RPCCardReader(getHost("cardserver"),
-				getPort("cardserver"));
+		CardReader reader = new RPCCardReader(getHost("cardserver"), getPort("cardserver"));
 
 		reader.readCardsBackground(new CardsReturned() {
 			@Override
@@ -72,24 +75,23 @@ public class CardInterfaceServer extends JavaServer {
 				if (cards.size() > 0)
 					showCard(cards.get(0));
 				else
-					showCard(Card
-							.newBuilder()
-							.setText(
-									"No Cards To Show (" + getHost() + ":"
-											+ getPort() + ")").build());
+					showCard(Card.newBuilder().setText("No Cards To Show (" + getHost() + ":" + getPort() + ")")
+							.build());
 			}
-		});
+		}, mainChan);
 
 	}
 
 	public static void main(String[] args) throws Exception {
-		Option optionHost = OptionBuilder.withLongOpt("host").hasArg()
-				.withDescription("Hostname of server").create("h");
-		Option optionPort = OptionBuilder.withLongOpt("port").hasArg()
-				.withDescription("Port number of server").create("p");
+		Option optionHost = OptionBuilder.withLongOpt("host").hasArg().withDescription("Hostname of server")
+				.create("h");
+		Option optionPort = OptionBuilder.withLongOpt("port").hasArg().withDescription("Port number of server")
+				.create("p");
+		Option optionChannel = OptionBuilder.withLongOpt("channel").hasArg().withDescription("Channel").create("c");
 		Options options = new Options();
 		options.addOption(optionHost);
 		options.addOption(optionPort);
+		options.addOption(optionChannel);
 		CommandLineParser parser = new GnuParser();
 		CommandLine line = parser.parse(options, args);
 
@@ -97,11 +99,20 @@ public class CardInterfaceServer extends JavaServer {
 		System.out.println("ARGS = " + Arrays.toString(args));
 		if (line.hasOption("host"))
 			host = line.getOptionValue("h");
-		int port = 50051;
+		int port = 50055;
 		if (line.hasOption("port"))
 			port = Integer.parseInt(line.getOptionValue("p"));
 
-		CardInterfaceServer server = new CardInterfaceServer();
+		Card.Channel channel = null;
+		if (line.hasOption("channel")) {
+			if (line.getOptionValue("c").equals("issues")) {
+				channel = Card.Channel.ISSUES;
+			} else if (line.getOptionValue("c").equals("music")) {
+				channel = Card.Channel.MUSIC;
+			}
+		}
+
+		CardInterfaceServer server = new CardInterfaceServer(channel);
 		System.out.println("SERVING " + host + " and " + port);
 		server.Serve(host, port);
 	}
