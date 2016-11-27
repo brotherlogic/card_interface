@@ -25,7 +25,7 @@ public class RPCCardReader extends CardReader {
 	}
 
 	@Override
-	public List<Card> readCards() {
+	public List<Card> readCards(Card.Channel rChan) {
 		List<Card> cards = new LinkedList<Card>();
 
 		System.out.println("READING FROM " + host + " and " + port);
@@ -35,7 +35,10 @@ public class RPCCardReader extends CardReader {
 		try {
 			CardList list = blockingStub.getCards(Empty.getDefaultInstance());
 
-			cards.addAll(list.getCardsList());
+			for (Card card : list.getCardsList()) {
+				if (rChan == null || card.getChannel().equals(rChan))
+					cards.add(card);
+			}
 			channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
 		} catch (Exception e) {
 			e.printStackTrace();

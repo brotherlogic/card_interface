@@ -9,12 +9,12 @@ public abstract class CardReader {
 	// Update every 60 seconds
 	private final int WAIT_TIME = 1000 * 60;
 
-	public abstract List<Card> readCards();
+	public abstract List<Card> readCards(Card.Channel channel);
 
-	public void readCardsBackground(CardsReturned callback) {
+	public void readCardsBackground(CardsReturned callback, Card.Channel channel) {
 		while (true) {
 			if (CardInterface.refresh)
-				callback.processCards(readCards());
+				callback.processCards(readCards(channel));
 			try {
 				Thread.sleep(WAIT_TIME);
 			} catch (InterruptedException e) {
