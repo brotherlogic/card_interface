@@ -227,8 +227,8 @@ public class CardInterface extends JFrame {
 			} else {
 				System.out.println("Showing the text: " + card.getText());
 				JTextPane label = new JTextPane();
-				label.setText("BLAH\n" + card.getText());
-				label.setBounds(0, 200, 800, 280);
+				label.setText(card.getText());
+				label.setBounds(0, 0, 800, 480);
 
 				StyledDocument doc = label.getStyledDocument();
 				SimpleAttributeSet center = new SimpleAttributeSet();
