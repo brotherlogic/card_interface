@@ -16,6 +16,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextPane;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import card.CardOuterClass.Card;
 import card.CardOuterClass.Card.Action;
@@ -222,8 +226,15 @@ public class CardInterface extends JFrame {
 				}
 			} else {
 				System.out.println("Showing the text: " + card.getText());
-				JLabel label = new JLabel(card.getText(), JLabel.CENTER);
-				label.setBounds(0, 0, 800, 480);
+				JTextPane label = new JTextPane();
+				label.setText("BLAH\n" + card.getText());
+				label.setBounds(0, 200, 800, 280);
+
+				StyledDocument doc = label.getStyledDocument();
+				SimpleAttributeSet center = new SimpleAttributeSet();
+				StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+				doc.setParagraphAttributes(0, doc.getLength(), center, false);
+
 				mainPanel.removeAll();
 				mainPanel.invalidate();
 				mainPanel.add(label, BorderLayout.NORTH);
