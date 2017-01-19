@@ -227,6 +227,7 @@ public class CardInterface extends JFrame {
 			} else {
 				System.out.println("Showing the text: " + card.getText());
 				JTextPane label = new JTextPane();
+				label.setEditable(false);
 				label.setText(card.getText());
 				label.setBounds(0, 0, 800, 480);
 

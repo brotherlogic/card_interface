@@ -72,9 +72,12 @@ public class CardInterfaceServer extends JavaServer {
 			public void processCards(List<Card> cards) {
 				Log(cards.size());
 
-				if (cards.size() > 0)
+				if (cards.size() > 0) {
+					for (int i = 0; i < cards.size(); i++) {
+						System.out.println("HERE " + i + " => " + cards.get(i));
+					}
 					showCard(cards.get(0));
-				else
+				} else
 					showCard(Card.newBuilder().setText("No Cards To Show (" + getHost() + ":" + getPort() + ")")
 							.build());
 			}
