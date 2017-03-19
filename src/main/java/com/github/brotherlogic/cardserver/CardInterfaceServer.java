@@ -86,25 +86,19 @@ public class CardInterfaceServer extends JavaServer {
 	}
 
 	public static void main(String[] args) throws Exception {
-		Option optionHost = OptionBuilder.withLongOpt("host").hasArg().withDescription("Hostname of server")
-				.create("h");
-		Option optionPort = OptionBuilder.withLongOpt("port").hasArg().withDescription("Port number of server")
-				.create("p");
+		Option optionHost = OptionBuilder.withLongOpt("server").hasArg().withDescription("Hostname of server")
+				.create("s");
 		Option optionChannel = OptionBuilder.withLongOpt("channel").hasArg().withDescription("Channel").create("c");
 		Options options = new Options();
 		options.addOption(optionHost);
-		options.addOption(optionPort);
 		options.addOption(optionChannel);
 		CommandLineParser parser = new GnuParser();
 		CommandLine line = parser.parse(options, args);
 
-		String host = "192.168.68.34";
+		String rServer = "192.168.68.34";
 		System.out.println("ARGS = " + Arrays.toString(args));
-		if (line.hasOption("host"))
-			host = line.getOptionValue("h");
-		int port = 50055;
-		if (line.hasOption("port"))
-			port = Integer.parseInt(line.getOptionValue("p"));
+		if (line.hasOption("server"))
+			rServer = line.getOptionValue("s");
 
 		Card.Channel channel = null;
 		if (line.hasOption("channel")) {
@@ -116,8 +110,7 @@ public class CardInterfaceServer extends JavaServer {
 		}
 
 		CardInterfaceServer server = new CardInterfaceServer(channel);
-		System.out.println("SERVING " + host + " and " + port);
-		server.Serve(host, port);
+		server.Serve(rServer);
 	}
 
 }
