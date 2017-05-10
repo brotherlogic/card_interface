@@ -65,7 +65,7 @@ public class CardInterfaceServer extends JavaServer {
 			}
 		});
 
-		CardReader reader = new RPCCardReader(getHost("cardserver"), getPort("cardserver"));
+		CardReader reader = new RPCCardReader(this);
 
 		reader.readCardsBackground(new CardsReturned() {
 			@Override
