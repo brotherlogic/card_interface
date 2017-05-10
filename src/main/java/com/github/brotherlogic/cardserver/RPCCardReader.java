@@ -13,21 +13,20 @@ import io.grpc.ManagedChannelBuilder;
 
 public class RPCCardReader extends CardReader {
 
-	private String host;
-	private int port;
-
+	private CardInterfaceServer server;
 	private ManagedChannel channel;
 	private CardServiceGrpc.CardServiceBlockingStub blockingStub;
 
-	public RPCCardReader(String host, int port) {
-		this.host = host;
-		this.port = port;
+	public RPCCardReader(CardInterfaceServer s) {
+		server = s;
 	}
 
 	@Override
 	public List<Card> readCards(Card.Channel rChan) {
 		List<Card> cards = new LinkedList<Card>();
 
+		String host = server.getHost("cardserver");
+		int port = server.getPort("cardserver");
 		System.out.println("READING FROM " + host + " and " + port);
 		channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
 		blockingStub = CardServiceGrpc.newBlockingStub(channel);
