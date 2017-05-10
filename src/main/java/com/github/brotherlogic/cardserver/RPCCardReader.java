@@ -28,22 +28,24 @@ public class RPCCardReader extends CardReader {
 		String host = server.getHost("cardserver");
 		int port = server.getPort("cardserver");
 		System.out.println("READING FROM " + host + " and " + port);
-		channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
-		blockingStub = CardServiceGrpc.newBlockingStub(channel);
+		if (port > 0) {
+			channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
+			blockingStub = CardServiceGrpc.newBlockingStub(channel);
 
-		try {
-			CardList list = blockingStub.getCards(Empty.getDefaultInstance());
+			try {
+				CardList list = blockingStub.getCards(Empty.getDefaultInstance());
 
-			for (Card card : list.getCardsList()) {
-				if (rChan == null || card.getChannel().equals(rChan))
-					cards.add(card);
+				for (Card card : list.getCardsList()) {
+					if (rChan == null || card.getChannel().equals(rChan))
+						cards.add(card);
+				}
+				channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
-		System.out.println("READ: " + cards);
+			System.out.println("READ: " + cards);
+		}
 		return cards;
 	}
 }
