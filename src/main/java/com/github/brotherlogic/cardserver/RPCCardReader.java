@@ -28,7 +28,7 @@ public class RPCCardReader extends CardReader {
 		String host = server.getHost("cardserver");
 		int port = server.getPort("cardserver");
 		System.out.println("READING FROM " + host + " and " + port);
-		if (port > 0) {
+		if (port > 0 && host != null) {
 			channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
 			blockingStub = CardServiceGrpc.newBlockingStub(channel);
 
