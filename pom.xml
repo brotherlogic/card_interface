@@ -20,7 +20,7 @@
   <distributionManagement>
     <repository>
       <id>ssh-repository</id>
-      <url>scpexe://simon@192.168.86.34/home/simon/codestore/${project.artifactId}/</url>
+      <url>scpexe://simon@192.168.86.64/home/simon/codestore/${project.artifactId}/</url>
     </repository>
   </distributionManagement>
   
