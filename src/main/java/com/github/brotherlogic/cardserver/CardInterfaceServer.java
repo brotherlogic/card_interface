@@ -95,7 +95,7 @@ public class CardInterfaceServer extends JavaServer {
 		CommandLineParser parser = new GnuParser();
 		CommandLine line = parser.parse(options, args);
 
-		String rServer = "192.168.68.34";
+		String rServer = "192.168.68.64";
 		System.out.println("ARGS = " + Arrays.toString(args));
 		if (line.hasOption("server"))
 			rServer = line.getOptionValue("s");
