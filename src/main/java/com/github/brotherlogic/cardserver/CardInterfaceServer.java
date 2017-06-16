@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 
 import javax.swing.JFrame;
 
@@ -86,6 +87,16 @@ public class CardInterfaceServer extends JavaServer {
 	}
 
 	public static void main(String[] args) throws Exception {
+		// Read the resources and print to stdout
+		try {
+			Properties p = new Properties();
+			p.load((CardInterfaceServer.class.getResourceAsStream("properties.txt")));
+			System.out.println(p.getProperty("version"));
+			System.out.println(p.getProperty("build.date"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		Option optionHost = OptionBuilder.withLongOpt("server").hasArg().withDescription("Hostname of server")
 				.create("s");
 		Option optionChannel = OptionBuilder.withLongOpt("channel").hasArg().withDescription("Channel").create("c");
