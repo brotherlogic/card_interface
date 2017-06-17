@@ -122,6 +122,7 @@ public class CardInterface extends JFrame {
 				panel.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
+						System.out.println("CLICKED");
 						deleteCard(card.getHash());
 						Card toWrite = card.getResult();
 						new CardWriter(server).writeCard(toWrite);
@@ -144,6 +145,7 @@ public class CardInterface extends JFrame {
 				label.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
+						System.out.println("CLICKED");
 						deleteCard(card.getHash());
 						Card toWrite = card.getResult();
 						new CardWriter(server).writeCard(toWrite);
@@ -211,7 +213,7 @@ public class CardInterface extends JFrame {
 
 						@Override
 						public void mouseClicked(MouseEvent e) {
-
+							System.out.println("CLICKED");
 							deleteCard(card.getHash());
 
 							// Add a like card
