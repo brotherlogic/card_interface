@@ -118,7 +118,9 @@ public class CardInterface extends JFrame {
 			}
 		} else if (card.getAction() == Card.Action.DISMISS) {
 			GraphicsPanel panel = showCardImage(card);
+			System.out.println("SHOWING CARD: " + panel);
 			if (panel != null) {
+				System.out.println("SHOWING THE CARD");
 				panel.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
