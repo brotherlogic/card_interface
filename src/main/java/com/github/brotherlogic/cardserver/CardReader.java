@@ -6,8 +6,8 @@ import card.CardOuterClass.Card;
 
 public abstract class CardReader {
 
-	// Update every 60 seconds
-	private final int WAIT_TIME = 1000 * 60;
+	// Update every 5 seconds
+	private final int WAIT_TIME = 1000 * 5;
 
 	public abstract List<Card> readCards(Card.Channel channel);
 
