@@ -135,6 +135,7 @@ public class CardInterface extends JFrame {
 				mainPanel.invalidate();
 				mainPanel.revalidate();
 				mainPanel.repaint();
+				System.out.println("DONE");
 			} else {
 				JLabel label = new JLabel(card.getText(), JLabel.CENTER);
 				label.setBounds(0, 0, 800, 480);
