@@ -24,6 +24,7 @@ public class RatingPanel extends JPanel {
 			panel.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
+					System.out.println("CLICKED HERE");
 					processor.processRating(index);
 				}
 			});
