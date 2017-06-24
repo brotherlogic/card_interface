@@ -77,6 +77,7 @@ public class CardInterfaceServer extends JavaServer {
 					for (int i = 0; i < cards.size(); i++) {
 						System.out.println("HERE " + i + " => " + cards.get(i));
 					}
+					System.out.println("SHOWING THIS CARD: " + cards.get(0));
 					showCard(cards.get(0));
 				} else
 					showCard(Card.newBuilder().setText("No Cards To Show (" + getHost() + ":" + getPort() + ")")
