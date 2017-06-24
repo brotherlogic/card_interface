@@ -80,7 +80,7 @@ public class CardInterface extends JFrame {
 	}
 
 	public void showCard(final Card card) {
-
+		Thread.dumpStack();
 		System.out.println("CARD = " + card);
 		server.Log("Showing Card: " + card.getText());
 
