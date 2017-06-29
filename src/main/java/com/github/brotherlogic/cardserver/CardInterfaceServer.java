@@ -48,9 +48,12 @@ public class CardInterfaceServer extends JavaServer {
 	}
 
 	private void showCard(final Card c) {
+		final double r = Math.random();
+		System.out.println("OUTER (" + r + ") : " + c);
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				System.out.println("INNER (" + r + "): " + c);
 				mainDisplay.showCard(c);
 			}
 		});
