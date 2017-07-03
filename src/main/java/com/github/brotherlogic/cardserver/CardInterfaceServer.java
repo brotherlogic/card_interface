@@ -2,6 +2,7 @@ package com.github.brotherlogic.cardserver;
 
 import java.awt.EventQueue;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -49,11 +50,11 @@ public class CardInterfaceServer extends JavaServer {
 
 	private void showCard(final Card c) {
 		final double r = Math.random();
-		System.out.println("OUTER (" + r + ") : " + c);
+		System.out.println(new Date() + " OUTER (" + r + ") : " + c);
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				System.out.println("INNER (" + r + "): " + c);
+				System.out.println(new Date() + " INNER (" + r + "): " + c);
 				mainDisplay.showCard(c);
 			}
 		});
