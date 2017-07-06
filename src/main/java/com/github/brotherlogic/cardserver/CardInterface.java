@@ -34,6 +34,7 @@ public class CardInterface extends JFrame {
 	Insets insets;
 	static boolean refresh = true;
 	private CardInterfaceServer server;
+	GraphicsPanel panel = new GraphicsPanel(null);
 
 	public CardInterface(CardInterfaceServer server) {
 		mainPanel = new JPanel();
@@ -67,8 +68,11 @@ public class CardInterface extends JFrame {
 			mainPanel.invalidate();
 
 			try {
-				Image img = ImageIO.read(new URL(card.getImage()));
-				GraphicsPanel panel = new GraphicsPanel(img);
+				if (!card.getImage().equals(currentImage)) {
+					Image img = ImageIO.read(new URL(card.getImage()));
+					panel.setImage(img);
+					currentImage = card.getImage();
+				}
 				mainPanel.add(panel);
 				return panel;
 			} catch (Exception e) {
@@ -78,6 +82,8 @@ public class CardInterface extends JFrame {
 
 		return null;
 	}
+
+	String currentImage = "";
 
 	public void showCard(final Card card) {
 		Thread.dumpStack();
@@ -163,8 +169,11 @@ public class CardInterface extends JFrame {
 				mainPanel.invalidate();
 
 				try {
-					Image img = ImageIO.read(new URL(card.getImage()));
-					GraphicsPanel panel = new GraphicsPanel(img);
+					if (!card.getImage().equals(currentImage)) {
+						Image img = ImageIO.read(new URL(card.getImage()));
+						panel.setImage(img);
+						currentImage = card.getImage();
+					}
 					RatingPanel rPanel = new RatingPanel(new ProcessRating() {
 						@Override
 						public void processRating(int rating) {
@@ -208,8 +217,11 @@ public class CardInterface extends JFrame {
 				mainPanel.invalidate();
 
 				try {
-					Image img = ImageIO.read(new URL(card.getImage()));
-					GraphicsPanel panel = new GraphicsPanel(img);
+					if (!card.getImage().equals(currentImage)) {
+						Image img = ImageIO.read(new URL(card.getImage()));
+						panel.setImage(img);
+						currentImage = card.getImage();
+					}
 					mainPanel.add(panel);
 
 					panel.addMouseListener(new MouseAdapter() {
