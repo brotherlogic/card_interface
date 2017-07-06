@@ -7,6 +7,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.net.URI;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
@@ -126,8 +127,12 @@ public class CardInterface extends JFrame {
 			GraphicsPanel panel = showCardImage(card);
 			System.out.println("SHOWING CARD: " + panel);
 			if (panel != null) {
-				System.out.println("SHOWING THE CARD");
-				panel.addMouseListener(new MouseAdapter() {
+
+				for (MouseListener m : panel.getListeners(MouseListener.class)) {
+					panel.removeMouseListener(m);
+				}
+
+				MouseListener m = new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						System.out.println("CLICKED");
@@ -135,7 +140,10 @@ public class CardInterface extends JFrame {
 						Card toWrite = card.getResult();
 						new CardWriter(server).writeCard(toWrite);
 					}
-				});
+				};
+				System.out.println("ADDING MOUSE LISTENER: " + m);
+
+				panel.addMouseListener(m);
 				panel.setBounds(400 - 240, 0, 480, 480);
 				mainPanel.add(panel);
 				mainPanel.invalidate();
