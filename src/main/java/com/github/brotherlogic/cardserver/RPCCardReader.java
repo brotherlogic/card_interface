@@ -25,6 +25,7 @@ public class RPCCardReader extends CardReader {
 	public List<Card> readCards(Card.Channel rChan) {
 		List<Card> cards = new LinkedList<Card>();
 
+		System.out.println("Looking for cardserver host");
 		String host = server.getHost("cardserver");
 		int port = server.getPort("cardserver");
 		System.out.println("READING FROM " + host + " and " + port);
