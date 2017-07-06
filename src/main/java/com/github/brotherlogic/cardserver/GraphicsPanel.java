@@ -33,7 +33,7 @@ public class GraphicsPanel extends JPanel {
 
 		if (scaledImg == null) {
 			System.out.println("SCALED = " + scaledHeight + "," + this.getHeight());
-			scaledImg = img.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+			scaledImg = img.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_FAST);
 			System.out.println("DRAWING: " + scaledImg.getHeight(null) + "," + scaledImg.getWidth(null));
 			System.out.println("SCALED in " + ((System.currentTimeMillis()) - sTime) + "ms");
 		}
