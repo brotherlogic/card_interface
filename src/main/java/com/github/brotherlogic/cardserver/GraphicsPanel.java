@@ -11,7 +11,6 @@ public class GraphicsPanel extends JPanel {
 	Image img, scaledImg;
 
 	public GraphicsPanel(Image image) {
-		System.out.println("CREATED GP");
 		img = image;
 	}
 
@@ -22,7 +21,6 @@ public class GraphicsPanel extends JPanel {
 
 	@Override
 	public void paint(Graphics g) {
-		long sTime = System.currentTimeMillis();
 		int imgHeight = img.getHeight(null);
 		int imgWidth = img.getWidth(null);
 
@@ -32,10 +30,7 @@ public class GraphicsPanel extends JPanel {
 		int scaledWidth = (int) (Math.ceil(imgWidth / scaleFactor));
 
 		if (scaledImg == null) {
-			System.out.println("SCALED = " + scaledHeight + "," + this.getHeight());
 			scaledImg = img.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
-			System.out.println("DRAWING: " + scaledImg.getHeight(null) + "," + scaledImg.getWidth(null));
-			System.out.println("SCALED in " + ((System.currentTimeMillis()) - sTime) + "ms");
 		}
 		g.drawImage(scaledImg, (this.getWidth() - scaledWidth) / 2, 0, null);
 
