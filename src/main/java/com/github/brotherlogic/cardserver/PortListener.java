@@ -14,8 +14,6 @@ public class PortListener {
 	}
 
 	public String listen() throws Exception {
-		System.out.println("Listening");
-
 		String retString = "";
 
 		ServerSocket sock = new ServerSocket(portNumber);
@@ -26,9 +24,7 @@ public class PortListener {
 			if (line.startsWith("GET")) {
 				retString += line + "\n";
 				read = true;
-			} else {
-				System.out.println("SKIPPING: " + line);
-			}
+			} 
 		sock.close();
 		client.close();
 
@@ -37,6 +33,5 @@ public class PortListener {
 
 	public static void main(String[] args) throws Exception {
 		PortListener pl = new PortListener(8090);
-		System.out.println(pl.listen());
 	}
 }

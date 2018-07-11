@@ -20,11 +20,9 @@ public class RatingPanel extends JPanel {
 			label.setHorizontalAlignment(JLabel.CENTER);
 			label.setVerticalAlignment(JLabel.CENTER);
 			final int index = i;
-			System.out.println("Adding listener");
 			panel.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					System.out.println("CLICKED HERE");
 					processor.processRating(index);
 				}
 			});

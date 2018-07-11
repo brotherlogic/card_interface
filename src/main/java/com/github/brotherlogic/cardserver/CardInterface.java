@@ -88,7 +88,6 @@ public class CardInterface extends JFrame {
 
 	public void showCard(final Card card) {
 		Thread.dumpStack();
-		System.out.println("CARD = " + card);
 
 		if (card.getAction() == Card.Action.VISITURL) {
 
@@ -124,7 +123,6 @@ public class CardInterface extends JFrame {
 			}
 		} else if (card.getAction() == Card.Action.DISMISS) {
 			GraphicsPanel panel = showCardImage(card);
-			System.out.println("SHOWING CARD: " + panel);
 			if (panel != null) {
 
 				for (MouseListener m : panel.getListeners(MouseListener.class)) {
@@ -134,13 +132,11 @@ public class CardInterface extends JFrame {
 				MouseListener m = new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						System.out.println("CLICKED");
 						deleteCard(card.getHash());
 						Card toWrite = card.getResult();
 						new CardWriter(server).writeCard(toWrite);
 					}
 				};
-				System.out.println("ADDING MOUSE LISTENER: " + m);
 
 				panel.addMouseListener(m);
 				panel.setBounds(400 - 240, 0, 480, 480);
@@ -148,7 +144,6 @@ public class CardInterface extends JFrame {
 				mainPanel.invalidate();
 				mainPanel.revalidate();
 				mainPanel.repaint();
-				System.out.println("DONE");
 			} else {
 				JLabel label = new JLabel(card.getText(), JLabel.CENTER);
 				label.setBounds(0, 0, 800, 480);
@@ -157,11 +152,9 @@ public class CardInterface extends JFrame {
 				mainPanel.invalidate();
 				mainPanel.revalidate();
 				mainPanel.repaint();
-				System.out.println("SHOWING " + label.getText());
 				label.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						System.out.println("CLICKED");
 						deleteCard(card.getHash());
 						Card toWrite = card.getResult();
 						new CardWriter(server).writeCard(toWrite);
@@ -169,7 +162,6 @@ public class CardInterface extends JFrame {
 				});
 			}
 		} else if (card.getAction() == Card.Action.RATE) {
-			System.out.println("RATE = " + card);
 			// Display the image if it has one
 			if (card.getImage().length() > 0) {
 				mainPanel.removeAll();
@@ -194,7 +186,6 @@ public class CardInterface extends JFrame {
 					panel.setBounds(400 - 240, 0, 480, 480);
 					mainPanel.add(rPanel);
 					rPanel.setBounds(800 - 100, 0, 100, 480);
-					System.out.println("Showing");
 
 				} catch (Exception e) {
 					JLabel label = new JLabel(e.getLocalizedMessage());
@@ -235,7 +226,6 @@ public class CardInterface extends JFrame {
 
 						@Override
 						public void mouseClicked(MouseEvent e) {
-							System.out.println("CLICKED");
 							deleteCard(card.getHash());
 
 							// Add a like card
@@ -249,7 +239,6 @@ public class CardInterface extends JFrame {
 					mainPanel.add(label);
 				}
 			} else {
-				System.out.println("Showing the text: " + card.getText());
 				JTextPane label = new JTextPane();
 				label.setEditable(false);
 				label.setText(card.getText());

@@ -25,10 +25,8 @@ public class RPCCardReader extends CardReader {
 	public List<Card> readCards(Card.Channel rChan) {
 		List<Card> cards = new LinkedList<Card>();
 
-		System.out.println("Looking for cardserver host");
 		String host = server.getHost("cardserver");
 		int port = server.getPort("cardserver");
-		System.out.println("READING FROM " + host + " and " + port);
 		if (port > 0 && host != null) {
 			channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
 			blockingStub = CardServiceGrpc.newBlockingStub(channel);
@@ -44,8 +42,6 @@ public class RPCCardReader extends CardReader {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
-			System.out.println("READ: " + cards);
 		}
 		return cards;
 	}

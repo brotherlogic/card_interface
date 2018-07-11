@@ -51,11 +51,9 @@ public class CardInterfaceServer extends JavaServer {
 
 	private void showCard(final Card c) {
 		final double r = Math.random();
-		System.out.println(new Date() + " OUTER (" + r + ") : " + c);
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				System.out.println(new Date() + " INNER (" + r + "): " + c);
 				mainDisplay.showCard(c);
 			}
 		});
@@ -77,10 +75,6 @@ public class CardInterfaceServer extends JavaServer {
 			@Override
 			public void processCards(List<Card> cards) {
 				if (cards.size() > 0) {
-					for (int i = 0; i < cards.size(); i++) {
-						System.out.println("HERE " + i + " => " + cards.get(i));
-					}
-					System.out.println("SHOWING THIS CARD: " + cards.get(0));
 					showCard(cards.get(0));
 				} else
 					showCard(Card.newBuilder().setText("No Cards To Show (" + getHost() + ":" + getPort() + ")")
@@ -95,8 +89,6 @@ public class CardInterfaceServer extends JavaServer {
 		try {
 			Properties p = new Properties();
 			p.load((CardInterfaceServer.class.getResourceAsStream("properties.txt")));
-			System.out.println(p.getProperty("version"));
-			System.out.println(p.getProperty("build.date"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -111,7 +103,6 @@ public class CardInterfaceServer extends JavaServer {
 		CommandLine line = parser.parse(options, args);
 
 		String rServer = "192.168.68.64";
-		System.out.println("ARGS = " + Arrays.toString(args));
 		if (line.hasOption("server"))
 			rServer = line.getOptionValue("s");
 
