@@ -28,7 +28,7 @@ public class CardInterfaceServer extends JavaServer {
 
 	public CardInterfaceServer(Card.Channel chan) {
 		mainChan = chan;
-		super.setTime(10,20);
+		super.setTime(10,19);
 	}
 
 	@Override
